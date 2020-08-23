@@ -79,7 +79,7 @@ productItems.forEach((element) => {
     element.addEventListener("click", () => {
         addItems.innerHTML += `
             <div id="itemBascet">
-                <div class="cart-product" id="itemBascet2">
+                <div class="cart-product">
                     <a href="#"><img src="${items.item[element.dataset.value].itemImg}" alt="" class="cart-product-img"></a>
                     <div class="cart-product-text">
                         <div class="cart-product-h2"><a href="#">${items.item[element.dataset.value].itemName}</a></div>
