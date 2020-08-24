@@ -1,13 +1,14 @@
-let items = [
-    { title: "MANGO PEOPLE-SHIRT", price: 152, img: "../src/img/1193.png", id:0 },
-    { title: "MANGO PEOPLE-SHIRT", price: 502, img: "../src/img/1201.png", id:1 },
-    { title: "MANGO PEOPLE-SHIRT", price: 23, img: "../src/img/1209.png", id:2 },
-    { title: "MANGO PEOPLE-SHIRT", price: 85, img: "../src/img/1240.png", id:3 },
-    { title: "MANGO PEOPLE-SHIRT", price: 552, img: "../src/img/1248.png", id:4 },
-    { title: "MANGO PEOPLE-SHIRT", price: 252, img: "../src/img/1256.png", id:5 },
-    { title: "MANGO PEOPLE-SHIRT", price: 79, img: "../src/img/1264.png", id:6 },
-    { title: "MANGO PEOPLE-SHIRT", price: 72, img: "../src/img/1272.png", id:7 }
+const items = [
+    { title: "MANGO PEOPLE-SHIRT", price: 52, img: "../src/img/1193.png", id:0 },
+    { title: "MANGO PEOPLE-SHIRT", price: 52, img: "../src/img/1201.png", id:1 },
+    { title: "MANGO PEOPLE-SHIRT", price: 52, img: "../src/img/1209.png", id:2 },
+    { title: "MANGO PEOPLE-SHIRT", price: 52, img: "../src/img/1240.png", id:3 },
+    { title: "MANGO PEOPLE-SHIRT", price: 52, img: "../src/img/1248.png", id:4 },
+    { title: "MANGO PEOPLE-SHIRT", price: 52, img: "../src/img/1256.png", id:5 },
+    { title: "MANGO PEOPLE-SHIRT", price: 52, img: "../src/img/1264.png", id:6 },
+    { title: "MANGO PEOPLE-SHIRT", price: 52, img: "../src/img/1272.png", id:7 }
 ];
+
 
 class OneItems {
     constructor (title, price, img, id) {
@@ -56,6 +57,9 @@ class ItemsList {
 const list = new ItemsList();
 list.init();
 
+
+
+
 class BascetOne{
     constructor (title, price, img, id) {
         this.title = title;
@@ -64,20 +68,23 @@ class BascetOne{
         this.id = id;
     }
     render() {
-        return `
-        <div id="itemBascet" data-value="${this.id}" data-price="${this.price}">
-            <div class="cart-product">
-                <a href="#"><img src="${this.img}" alt="" class="cart-product-img"></a>
-                <div class="cart-product-text">
-                    <div class="cart-product-h2"><a href="#">${this.title}</a></div>
-                    <div class="cart-product-price">1  x   $${this.price}</div>
-                </div>
-                <div class="cart-product-circle"><a href="#" onclick="newBascet.clearBascet();"><i class="fas fa-times-circle"></i></a></div>
-            </div>
-        </div>
-        `
+        // return `
+        // <div id="itemBascet" data-value="${this.id}">
+        //     <div class="cart-product">
+        //         <a href="#"><img src="${this.img}" alt="" class="cart-product-img"></a>
+        //         <div class="cart-product-text">
+        //             <div class="cart-product-h2"><a href="#">${this.title}</a></div>
+        //             <div class="cart-product-price">1  x   $${this.price}</div>
+        //         </div>
+        //         <div class="cart-product-circle"><a href="#" onclick="newBascet.clearBascet();"><i class="fas fa-times-circle"></i></a></div>
+        //     </div>
+        // </div>
+        // `
+
+        return this.id;
     }
 }
+
 
 class BascetList {
     constructor () {
@@ -87,7 +94,7 @@ class BascetList {
         this.itemsBascet = [...document.getElementsByClassName("product__add")];
     }
     render() {
-        let htmlBascet = '';
+        let htmlBascet = [ ];
         this.itemsBascet.forEach((element) => {
             element.addEventListener ('click', () => {
                 let click = element;
@@ -102,25 +109,7 @@ class BascetList {
             })
         });
     }
-    clearBascet() {
-        let clearItem = [...document.getElementsByClassName("cart-product")];
-        clearItem.forEach((el) => {
-            el.addEventListener("click", () => {
-                let removeDivItem = el;
-                if (removeDivItem.parentNode) {
-                    removeDivItem.parentNode.removeChild(removeDivItem);
-                }
-            })
-        })
-    }
-    totalPrice() {
-        let totalPrice = document.querySelectorAll('#itemBascet')
-        let htmlTotalPrice = 0;
-        totalPrice.forEach((el) => {
-            htmlTotalPrice += Number(el.dataset.price);
-        })
-        document.querySelector('#totalPrise').innerHTML = "$" + htmlTotalPrice;
-    }
+    
     init() {
         this.fetchItems();
         this.render();
@@ -131,9 +120,10 @@ let newBascet = new BascetList();
 newBascet.init();
 
 
+
 //Открытие - закрытие корзины по клику
 let bascetNone = document.getElementById("bascetNone");
 let bascet = document.getElementById("bascet").addEventListener("click", () => {
     bascetNone.classList.toggle("open-bascet");
-    newBascet.totalPrice();
+    //newBascet.totalPrice();
 });
