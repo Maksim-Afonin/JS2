@@ -65,9 +65,9 @@ class BascetOne{
     }
     render() {
         return `
-        <div id="itemBascet" data-value="${this.id}" data-price="${this.price}">
-            <div class="cart-product">
-                <a href="#"><img src="${this.img}" alt="" class="cart-product-img"></a>
+        <div id="itemBascet" data-value="${this.id}">
+            <div class="cart-product" data-price="${this.price}">
+                <a href="#"><img src="${this.img}" data-value="${this.id}" alt="" class="cart-product-img"></a>
                 <div class="cart-product-text">
                     <div class="cart-product-h2"><a href="#">${this.title}</a></div>
                     <div class="cart-product-price">1  x   $${this.price}</div>
@@ -114,7 +114,7 @@ class BascetList {
         })
     }
     totalPrice() {
-        let totalPrice = document.querySelectorAll('#itemBascet')
+        let totalPrice = [...document.getElementsByClassName('cart-product')];
         let htmlTotalPrice = 0;
         totalPrice.forEach((el) => {
             htmlTotalPrice += Number(el.dataset.price);
@@ -136,4 +136,5 @@ let bascetNone = document.getElementById("bascetNone");
 let bascet = document.getElementById("bascet").addEventListener("click", () => {
     bascetNone.classList.toggle("open-bascet");
     newBascet.totalPrice();
+    // newBascet.render();
 });
