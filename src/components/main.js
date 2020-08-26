@@ -32,6 +32,7 @@ class productItems {
     }
 }
 
+
 class itemsList {
     constructor () {
         this.items = [];
