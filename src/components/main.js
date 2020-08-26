@@ -9,7 +9,7 @@ let items = [
     { title: "MANGO PEOPLE-SHIRT", price: 72, img: "../src/img/1272.png", id:7 }
 ];
 
-class OneItems {
+class productItems {
     constructor (title, price, img, id) {
         this.title = title;
         this.price = price;
@@ -32,7 +32,7 @@ class OneItems {
     }
 }
 
-class ItemsList {
+class itemsList {
     constructor () {
         this.items = [];
     }
@@ -42,8 +42,8 @@ class ItemsList {
     render() {
         let html = '';
         this.items.forEach(({ title, price, img, id }) => {
-            const OneItem = new OneItems(title, price, img, id);
-            html += OneItem.render();
+            const item = new productItems(title, price, img, id);
+            html += item.render();
         });
         document.querySelector('#app').innerHTML = html;
     }
@@ -53,10 +53,10 @@ class ItemsList {
     }
 }
 
-const list = new ItemsList();
+const list = new itemsList();
 list.init();
 
-class BascetOne{
+class productBascet{
     constructor (title, price, img, id) {
         this.title = title;
         this.price = price;
@@ -79,7 +79,7 @@ class BascetOne{
     }
 }
 
-class BascetList {
+class bascetList {
     constructor () {
         this.itemsBascet = [];
     }
@@ -93,7 +93,7 @@ class BascetList {
                 let click = element;
                 items.forEach((elitems) => {
                     if (click.parentNode.dataset.value == elitems.id) {
-                        let renderBascet = new BascetOne(elitems.title, elitems.price, elitems.img, elitems.id);
+                        let renderBascet = new productBascet(elitems.title, elitems.price, elitems.img, elitems.id);
                         htmlBascet += renderBascet.render();
                     }
                     document.querySelector('#addItems').innerHTML = htmlBascet;
@@ -127,7 +127,7 @@ class BascetList {
     }
 }
 
-let newBascet = new BascetList();
+let newBascet = new bascetList();
 newBascet.init();
 
 
