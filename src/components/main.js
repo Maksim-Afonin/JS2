@@ -56,8 +56,12 @@ class itemsList {
 const list = new itemsList();
 list.init();
 
-class productBascet{
-    constructor (title, price, img, id) {
+
+
+let bascetCatalog = [];
+
+class productBascet {
+    constructor(title, price, img, id) {
         this.title = title;
         this.price = price;
         this.img = img;
@@ -72,69 +76,79 @@ class productBascet{
                     <div class="cart-product-h2"><a href="#">${this.title}</a></div>
                     <div class="cart-product-price">1  x   $${this.price}</div>
                 </div>
-                <div class="cart-product-circle"><a href="#" onclick="newBascet.clearBascet();"><i class="fas fa-times-circle"></i></a></div>
+                <div class="cart-product-circle"><a href="#" onclick="newBascet.clearBascet();"><i class="fas fa-times-circle"  data-value="${this.id}"></i></a></div>
             </div>
         </div>
         `
     }
 }
 
+
+
+let productBas = new productBascet();
+
+
 class bascetList {
-    constructor () {
-        this.itemsBascet = [];
+    constructor() {
+        this.productCatalog = [];
     }
-    fetchItems() {
-        this.itemsBascet = [...document.getElementsByClassName("product__add")];
+    fetc() {
+        this.productCatalog = [...document.getElementsByClassName("product__add")];    
     }
     render() {
-        let htmlBascet = '';
-        this.itemsBascet.forEach((element) => {
-            element.addEventListener ('click', () => {
-                let click = element;
+        this.productCatalog.forEach((element) => {
+            element.addEventListener("click", () => {
                 items.forEach((elitems) => {
-                    if (click.parentNode.dataset.value == elitems.id) {
+                    if (element.parentNode.dataset.value == elitems.id) {
                         let renderBascet = new productBascet(elitems.title, elitems.price, elitems.img, elitems.id);
-                        htmlBascet += renderBascet.render();
+                        bascetCatalog.push(renderBascet);
+                        console.log(bascetCatalog);
+                        productBas.render();
+                        let html = '';
+                        bascetCatalog.forEach(({ title, price, img, id }) => {
+                            const item = new productBascet(title, price, img, id);
+                            html += item.render();
+                        })
+                        document.querySelector('#addItems').innerHTML = html;
                     }
-                    document.querySelector('#addItems').innerHTML = htmlBascet;
                 })
-                
             })
-        });
+        })
     }
     clearBascet() {
-        let clearItem = [...document.getElementsByClassName("cart-product")];
-        clearItem.forEach((el) => {
+        this.clearBascetItems = [...document.getElementsByClassName("fa-times-circle")];
+        this.clearBascetItems.forEach((el) => {
             el.addEventListener("click", () => {
-                let removeDivItem = el;
-                if (removeDivItem.parentNode) {
-                    removeDivItem.parentNode.removeChild(removeDivItem);
-                }
+                console.log(el)
+                bascetCatalog.find(element => {
+                    bascetCatalog.splice(element, 1);
+                    newBascet.render();
+                })
             })
         })
-    }
-    totalPrice() {
-        let totalPrice = [...document.getElementsByClassName('cart-product')];
-        let htmlTotalPrice = 0;
-        totalPrice.forEach((el) => {
-            htmlTotalPrice += Number(el.dataset.price);
-        })
-        document.querySelector('#totalPrise').innerHTML = "$" + htmlTotalPrice;
-    }
-    init() {
-        this.fetchItems();
-        this.render();
     }
 }
 
+
+
 let newBascet = new bascetList();
-newBascet.init();
+newBascet.fetc();
+newBascet.render();
+newBascet.clearBascet();
+
+
+
+
+
+
+
+
 
 
 //Открытие - закрытие корзины по клику
 let bascetNone = document.getElementById("bascetNone");
 let bascet = document.getElementById("bascet").addEventListener("click", () => {
     bascetNone.classList.toggle("open-bascet");
-    newBascet.totalPrice();
+    // newBascet.totalPrice();
     // newBascet.render();
 });
