@@ -24,7 +24,7 @@ class productItems {
                     <img src="${this.img}" alt="">
                     <p class="p-blok-items">${this.title}</p>
                     <p class="price-blok-items">$${this.price}</p>
-                    <a href="javascript:void(0)" class="product__add"><span class="img-add-cart"></span>Add to Cart</a>
+                    <a href="javascript:void(0)" class="product__add" data-value="${this.id}"><span class="img-add-cart"></span>Add to Cart</a>
                 </div>        
             </a>
         </article>
@@ -58,9 +58,8 @@ list.init();
 
 
 
-let bascetCatalog = [];
 
-class productBascet {
+class itemBascet {
     constructor(title, price, img, id) {
         this.title = title;
         this.price = price;
@@ -76,7 +75,7 @@ class productBascet {
                     <div class="cart-product-h2"><a href="#">${this.title}</a></div>
                     <div class="cart-product-price">1  x   $${this.price}</div>
                 </div>
-                <div class="cart-product-circle"><a href="#" onclick="newBascet.clearBascet();"><i class="fas fa-times-circle"  data-value="${this.id}"></i></a></div>
+                <div class="cart-product-circle"  id="clearBascet" data-value="${this.id}"><a href="#"><i class="fas fa-times-circle"></i></a></div>
             </div>
         </div>
         `
@@ -84,71 +83,75 @@ class productBascet {
 }
 
 
-
-let productBas = new productBascet();
-
-
 class bascetList {
     constructor() {
         this.productCatalog = [];
+        this.bascet = [];
     }
     fetc() {
-        this.productCatalog = [...document.getElementsByClassName("product__add")];    
+        this.productCatalog = [...document.getElementsByClassName("product__add")];
+    }
+    addBascetArr() {
+        this.productCatalog.forEach((product) => {
+            product.addEventListener("click", () => {
+                if (product.dataset.value == items[product.dataset.value].id) {
+                    this.bascet.push(items[product.dataset.value]);
+                    this.render();
+                    this.clear();
+                    this.totalPrice();
+                }
+            })
+        })
     }
     render() {
-        this.productCatalog.forEach((element) => {
-            element.addEventListener("click", () => {
-                items.forEach((elitems) => {
-                    if (element.parentNode.dataset.value == elitems.id) {
-                        let renderBascet = new productBascet(elitems.title, elitems.price, elitems.img, elitems.id);
-                        bascetCatalog.push(renderBascet);
-                        console.log(bascetCatalog);
-                        productBas.render();
-                        let html = '';
-                        bascetCatalog.forEach(({ title, price, img, id }) => {
-                            const item = new productBascet(title, price, img, id);
-                            html += item.render();
-                        })
-                        document.querySelector('#addItems').innerHTML = html;
-                    }
+        let html = '';
+        this.bascet.forEach(({ title, price, img, id }) => {
+            const item = new itemBascet(title, price, img, id);
+            html += item.render();
+        })
+        document.querySelector('#addItems').innerHTML = html;
+    }
+    clear() {
+        this.clearBascetItems = [...document.querySelectorAll("#clearBascet")];
+        this.clearBascetItems.forEach((el) => {
+            el.addEventListener("click", () => {
+                let clearItem = [...document.getElementsByClassName("cart-product")];
+                clearItem.forEach((el) => {
+                    el.addEventListener("click", () => {
+                        let removeDivItem = el;
+                        if (removeDivItem.parentNode) {
+                            removeDivItem.parentNode.removeChild(removeDivItem);
+                            this.totalPrice();
+                        }
+                    })
                 })
+                this.bascet = this.bascet.filter((element) => element.id != el.dataset.value)
             })
         })
     }
-    clearBascet() {
-        this.clearBascetItems = [...document.getElementsByClassName("fa-times-circle")];
-        this.clearBascetItems.forEach((el) => {
-            el.addEventListener("click", () => {
-                console.log(el)
-                bascetCatalog.find(element => {
-                    bascetCatalog.splice(element, 1);
-                    newBascet.render();
-                })
-            })
+    totalPrice() {
+        let totalPrice = [...document.getElementsByClassName('cart-product')];
+        let htmlTotalPrice = 0;
+        totalPrice.forEach((el) => {
+            htmlTotalPrice += Number(el.dataset.price);
         })
+        document.querySelector('#totalPrise').innerHTML = "$" + htmlTotalPrice;
+    }
+    init() {
+        this.fetc();
+        this.addBascetArr();
+        this.render();
+        this.clear();
     }
 }
 
 
-
-let newBascet = new bascetList();
-newBascet.fetc();
-newBascet.render();
-newBascet.clearBascet();
-
-
-
-
-
-
-
-
+let basketList = new bascetList();
+basketList.init();
 
 
 //Открытие - закрытие корзины по клику
 let bascetNone = document.getElementById("bascetNone");
-let bascet = document.getElementById("bascet").addEventListener("click", () => {
+let bascetOpen = document.getElementById("bascet").addEventListener("click", () => {
     bascetNone.classList.toggle("open-bascet");
-    // newBascet.totalPrice();
-    // newBascet.render();
 });
