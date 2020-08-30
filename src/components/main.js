@@ -150,6 +150,7 @@ let basketList = new bascetList();
 basketList.init();
 
 
+
 //Открытие - закрытие корзины по клику
 let bascetNone = document.getElementById("bascetNone");
 let bascetOpen = document.getElementById("bascet").addEventListener("click", () => {
