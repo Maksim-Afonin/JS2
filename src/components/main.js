@@ -1,13 +1,14 @@
 let items = [
-    { title: "MANGO PEOPLE-SHIRT", price: 152, img: "../src/img/1193.png", id:0 },
+    { title: "MANGO PEOPLE-SHIRT1", price: 152, img: "../src/img/1193.png", id:0 },
     { title: "MANGO PEOPLE-SHIRT", price: 502, img: "../src/img/1201.png", id:1 },
-    { title: "MANGO PEOPLE-SHIRT", price: 23, img: "../src/img/1209.png", id:2 },
+    { title: "MANGO PEOPLE-SHIRT3", price: 3, img: "../src/img/1209.png", id:2 },
     { title: "MANGO PEOPLE-SHIRT", price: 85, img: "../src/img/1240.png", id:3 },
     { title: "MANGO PEOPLE-SHIRT", price: 552, img: "../src/img/1248.png", id:4 },
-    { title: "MANGO PEOPLE-SHIRT", price: 252, img: "../src/img/1256.png", id:5 },
+    { title: "MANGO PEOPLE-SHIRT5", price: 252, img: "../src/img/1256.png", id:5 },
     { title: "MANGO PEOPLE-SHIRT", price: 79, img: "../src/img/1264.png", id:6 },
     { title: "MANGO PEOPLE-SHIRT", price: 72, img: "../src/img/1272.png", id:7 }
 ];
+
 
 class productItems {
     constructor (title, price, img, id) {
@@ -32,24 +33,46 @@ class productItems {
     }
 }
 
+let findValue = document.getElementById('findValue');
+let findButton = document.getElementById('find');
+
+findButton.addEventListener('click', () => {
+    list.filterProducts(findValue.value);
+    console.log(findValue.value);
+})
+
 class itemsList {
     constructor () {
         this.items = [];
+        this.filteredProducts = [];
     }
     fetchItems() {
         this.items = items;
+        this.filteredProducts = this.items;
     }
-    render() {
+    render(list) {
+        if(list && list.length >0) {
+            this.filteredProducts = list;
+        } else {
+            this.fetchItems();
+        }
+
         let html = '';
-        this.items.forEach(({ title, price, img, id }) => {
+        this.filteredProducts.forEach(({ title, price, img, id }) => {
             const item = new productItems(title, price, img, id);
             html += item.render();
         });
         document.querySelector('#app').innerHTML = html;
     }
+    filterProducts(value) {
+        let regexp = new RegExp(value, 'i');
+        let filteredProducts = this.items.filter(product => regexp.test(product.title));
+        this.render(filteredProducts);
+    }
     init() {
-        this.fetchItems();
-        this.render();
+        this.filterProducts();
+        // this.fetchItems();
+        // this.render();
     }
 }
 
